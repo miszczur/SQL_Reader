@@ -1,8 +1,7 @@
 {
   "profiles": {
-    "SQL_Reader": {
-      "commandName": "Executable",
-      "executablePath": "C:\\Users\\Kuba\\source\\repos\\SQL_Reader\\bin\\Release\\netcoreapp3.1\\SQL_Reader.exe",
+    "newProfile1": {
+      "commandName": "Project",
       "commandLineArgs": "C:\\Users\\Kuba\\Desktop\\menu.sql"
     }
   }

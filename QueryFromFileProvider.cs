@@ -13,19 +13,20 @@ namespace SQL_Reader
         {
             this.filePath = path;
         }
+
         private string removeComments(string line)
         {
-            string commentLine = String.Empty;
-            commentLine = Regex.Replace(line, "--.*", string.Empty);
-            return commentLine;
+           return Regex.Replace(line, "--.*", string.Empty);
         }
+
         public IEnumerable<string> GetQueries()
         {
             List<string> listLine = new List<string>();
             if (File.Exists(filePath))
             {
 
-                // Read file using StreamReader. Reads file line by line  
+                //Read file using StreamReader. Reads file line by line  
+
                 using (StreamReader file = new StreamReader(filePath))
                 {
                     string line;
@@ -34,7 +35,7 @@ namespace SQL_Reader
                     {
 
 
-                        removeComments(line);
+                        line = removeComments(line);
 
                         if (string.IsNullOrWhiteSpace(line) == true)
                         {

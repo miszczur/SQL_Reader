@@ -4,17 +4,14 @@ namespace SQL_Reader
 {
     public class SqlReader
     {
-        public List<string> PrepareQueries(IQueryProvider provider)
+        private IQueryProvider provider;
+        public SqlReader(IQueryProvider provider)
         {
-            List<string> QueriedProvider = new List<string>();
-
-            QueriedProvider = (List<string>)provider.GetQueries();
-            return QueriedProvider;
-
+            this.provider = provider;
         }
         public void SendQueries(ISender sender)
         {
-
+            sender.Send(this.provider.GetQueries());
         }
     }
 }

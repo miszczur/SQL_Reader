@@ -4,7 +4,7 @@ namespace SQL_Reader
 {
     public interface ISender
     {
-        void Send(string query);
-        void Send(IEnumerable<string> queries);
+        public void Send(string query);
+        public void Send(IEnumerable<string> queries);
     }
 }

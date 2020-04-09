@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 
 
 
@@ -14,8 +13,15 @@ namespace SQL_Reader
         {
 
 
-            QueryFromFileProvider filePath = new QueryFromFileProvider(args[0]);
-            filePath.GetQueries();
+            QueryFromFileProvider queryFromFileProvider = new QueryFromFileProvider(args[0]);
+           
+            ConsoleSender writeOnConsole = new ConsoleSender();
+            
+            SqlReader reader = new SqlReader(queryFromFileProvider);
+
+            reader.SendQueries(writeOnConsole);
+
+            
 
 
             Console.ReadKey();
