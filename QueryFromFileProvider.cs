@@ -7,50 +7,43 @@ namespace SQL_Reader
 {
     public class QueryFromFileProvider : IQueryProvider
     {
-        private string filePath;
+        private string[] lines;
+    
 
         public QueryFromFileProvider(string path)
         {
-            this.filePath = path;
+            this.lines = File.ReadAllLines(path);
+
+        }
+
+        public QueryFromFileProvider(string[] lines)
+        {
+            this.lines = lines;
         }
 
         private string removeComments(string line)
         {
-           return Regex.Replace(line, "--.*", string.Empty);
+           return Regex.Replace(line, "--.*", string.Empty); //removing sql comments in single line from file
         }
 
         public IEnumerable<string> GetQueries()
         {
             List<string> listLine = new List<string>();
-            if (File.Exists(filePath))
+            
+
+            for (int i = 0; i < lines.Length; i++)
             {
-
-                //Read file using StreamReader. Reads file line by line  
-
-                using (StreamReader file = new StreamReader(filePath))
+                lines[i] = removeComments(lines[i]);
+                if (string.IsNullOrWhiteSpace(lines[i]) == true)
                 {
-                    string line;
-
-                    while ((line = file.ReadLine()) != null)
-                    {
-
-
-                        line = removeComments(line);
-
-                        if (string.IsNullOrWhiteSpace(line) == true)
-                        {
-                            continue;
-                        }
-
-                        listLine.Add(line);
-                        
-                    }
-
+                    continue;
                 }
-
+                listLine.Add(lines[i]);
             }
             return listLine;
-
         }
+
     }
+      
+    
 }
