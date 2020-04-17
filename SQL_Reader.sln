@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29911.84
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQL_Reader", "SQL_Reader.csproj", "{48D73E35-51D5-4BB2-808C-0345BE2443D2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SQL_Reader", "SQL_Reader.csproj", "{48D73E35-51D5-4BB2-808C-0345BE2443D2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SQL_Reader.Tests", "..\SQL_Reader.Tests\SQL_Reader.Tests.csproj", "{806692B1-C1D9-4FEA-B242-63CCC2EBC6BA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{48D73E35-51D5-4BB2-808C-0345BE2443D2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{48D73E35-51D5-4BB2-808C-0345BE2443D2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{48D73E35-51D5-4BB2-808C-0345BE2443D2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{806692B1-C1D9-4FEA-B242-63CCC2EBC6BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{806692B1-C1D9-4FEA-B242-63CCC2EBC6BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{806692B1-C1D9-4FEA-B242-63CCC2EBC6BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{806692B1-C1D9-4FEA-B242-63CCC2EBC6BA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
