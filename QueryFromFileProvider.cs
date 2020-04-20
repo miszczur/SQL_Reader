@@ -34,14 +34,21 @@ namespace SQL_Reader
 
             foreach (var item in lines)
             {
-                buffor = removeComments(item);
+                buffor = removeComments(item).Trim();
                 if (string.IsNullOrWhiteSpace(buffor) == true)
                 {
                     continue;
                 }
                 listLine.Add(buffor);
             }
-            return listLine;
+            if (listLine.Count == 0)
+            {
+                throw new ArgumentNullException("List is empty");
+            }
+            else
+            {
+                return listLine;
+            }
         }
 
     }
