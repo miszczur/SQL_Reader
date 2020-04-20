@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Linq;
 
 namespace SQL_Reader
 {
     public class QueryFromFileProvider : IQueryProvider
     {
-        private string[] lines;
+        private IEnumerable<string> lines;
     
 
         public QueryFromFileProvider(string path)
@@ -16,7 +17,7 @@ namespace SQL_Reader
 
         }
 
-        public QueryFromFileProvider(string[] lines)
+        public QueryFromFileProvider(IEnumerable<string> lines)
         {
             this.lines = lines;
         }
@@ -29,16 +30,16 @@ namespace SQL_Reader
         public IEnumerable<string> GetQueries()
         {
             List<string> listLine = new List<string>();
-            
+            string buffor;
 
-            for (int i = 0; i < lines.Length; i++)
+            foreach (var item in lines)
             {
-                lines[i] = removeComments(lines[i]);
-                if (string.IsNullOrWhiteSpace(lines[i]) == true)
+                buffor = removeComments(item);
+                if (string.IsNullOrWhiteSpace(buffor) == true)
                 {
                     continue;
                 }
-                listLine.Add(lines[i]);
+                listLine.Add(buffor);
             }
             return listLine;
         }
