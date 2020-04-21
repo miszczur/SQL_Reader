@@ -1,10 +1,8 @@
-﻿using System.Collections.Generic;
-
-namespace SQL_Reader
+﻿namespace SQL_Reader
 {
     public class SqlReader
     {
-        private IQueryProvider provider;
+        private readonly IQueryProvider provider;
         public SqlReader(IQueryProvider provider)
         {
             this.provider = provider;
