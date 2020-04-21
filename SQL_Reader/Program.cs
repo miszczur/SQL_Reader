@@ -15,7 +15,7 @@ namespace SQL_Reader
 
             // QueryFromFileProvider queryFromFileProvider = new QueryFromFileProvider(args[0]);
 
-            string[] lines = File.ReadAllLines(args[0]);
+            string[] lines = null;
             QueryFromFileProvider queryFromFileProvider = new QueryFromFileProvider(lines);
 
             ConsoleSender writeOnConsole = new ConsoleSender();

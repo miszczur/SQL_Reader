@@ -24,31 +24,39 @@ namespace SQL_Reader
 
         private string removeComments(string line)
         {
-           return Regex.Replace(line, "--.*", string.Empty); //removing sql comments in single line from file
+           return Regex.Replace(line, "--.*", string.Empty).Trim(); //removing sql comments in single line from file
         }
 
         public IEnumerable<string> GetQueries()
         {
-            List<string> listLine = new List<string>();
+            List<string> listOfLines = new List<string>();
             string buffor;
-
-            foreach (var item in lines)
+            if (lines != null)
             {
-                buffor = removeComments(item).Trim();
-                if (string.IsNullOrWhiteSpace(buffor) == true)
+                foreach (var item in lines)
                 {
-                    continue;
+                    buffor = removeComments(item);
+                    if (string.IsNullOrWhiteSpace(buffor) == true)
+                    {
+                        continue;
+                    }
+                    listOfLines.Add(buffor);
                 }
-                listLine.Add(buffor);
-            }
-            if (listLine.Count == 0)
-            {
-                throw new ArgumentNullException("List is empty");
-            }
+
+                if(listOfLines.Count == 0)
+                {
+                    listOfLines.Add("List of Queries is empty!");
+                }
+                return listOfLines;
+
+            }        
+            
             else
             {
-                return listLine;
+                listOfLines.Add("List of Queries is empty!");
+                return listOfLines;
             }
+            
         }
 
     }
