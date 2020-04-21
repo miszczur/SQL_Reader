@@ -5,6 +5,5 @@ namespace SQL_Reader
     public interface IQueryProvider
     {
         IEnumerable<string> GetQueries();
-        
     }
 }
