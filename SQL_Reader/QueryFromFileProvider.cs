@@ -19,6 +19,10 @@ namespace SQL_Reader
 
         public QueryFromFileProvider(IEnumerable<string> lines)
         {
+            if(lines == null)
+            {
+                throw new MyOwnNullException();
+            }
             this.lines = lines;
         }
 
@@ -31,8 +35,7 @@ namespace SQL_Reader
         {
             List<string> listOfLines = new List<string>();
             string buffor;
-            if (lines != null)
-            {
+            
                 foreach (var item in lines)
                 {
                     buffor = removeComments(item);
@@ -42,21 +45,7 @@ namespace SQL_Reader
                     }
                     listOfLines.Add(buffor);
                 }
-
-                if(listOfLines.Count == 0)
-                {
-                    listOfLines.Add("List of Queries is empty!");
-                }
-                return listOfLines;
-
-            }        
-            
-            else
-            {
-                listOfLines.Add("List of Queries is empty!");
-                return listOfLines;
-            }
-            
+                return listOfLines;              
         }
 
     }
