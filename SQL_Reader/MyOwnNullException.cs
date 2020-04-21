@@ -10,7 +10,7 @@ namespace SQL_Reader
         {
             get
             {
-                return "Argument cannot be null!";
+                return "Parameter cannot be null!";
             }
         }
     }
