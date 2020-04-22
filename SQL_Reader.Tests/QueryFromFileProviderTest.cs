@@ -40,5 +40,23 @@ namespace SQL_Reader.Tests
             var result = provider.GetQueries();
             Assert.Empty(result);
         }
+
+        [Fact]
+        public void GetQueries_ListHaveOnlyWhitespaceResultShouldBeEmpty()
+        {
+            List<string> lines = new List<string> { "" };
+            var provider = new QueryFromFileProvider(lines);
+            var result = provider.GetQueries();
+            Assert.Empty(result);
+        }
+
+        [Fact]
+        public void GetQueries_ListIsEmptyResultShouldBeEmpty()
+        {
+            List<string> lines = new List<string>();
+            var provider = new QueryFromFileProvider(lines);
+            var result = provider.GetQueries();
+            Assert.Empty(result);
+        }
     }
 }
