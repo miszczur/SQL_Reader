@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Threading;
+using System;
 
 namespace SQL_Reader
 {
@@ -41,7 +43,11 @@ namespace SQL_Reader
                 }
                 listOfLines.Add(buffor);
             }
-            return listOfLines;
+            return listOfLines;           
+        }
+        public void OnQueriesProvided()
+        {
+            Console.WriteLine("Queries has been provided.");
         }
     }
 }

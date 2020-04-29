@@ -1,4 +1,5 @@
-﻿namespace SQL_Reader
+﻿using System;
+namespace SQL_Reader
 {
     public class SqlReader
     {
