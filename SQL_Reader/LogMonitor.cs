@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Collections;
-
+﻿using System.IO;
 namespace SQL_Reader
 {
     public class LogMonitor
     {
-        public void OnQueryProvided(string e)
-        {
-            Console.WriteLine($"Query {e} has been provided.");
-        }
 
-        //TODO: method to saving logs to file, more logging methods
+        public void OnQueryProvided(object obj, string e)
+        {
+            using (StreamWriter sw = File.AppendText("logFile.txt"))
+            {
+                sw.WriteLine($"Query:{e} has been provided.");
+            }
+        }
     }
 }

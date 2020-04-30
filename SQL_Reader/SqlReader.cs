@@ -1,5 +1,4 @@
-﻿using System;
-namespace SQL_Reader
+﻿namespace SQL_Reader
 {
     public class SqlReader
     {
@@ -8,7 +7,7 @@ namespace SQL_Reader
         {
             this.provider = provider;
         }
-              
+
         public void SendQueries(ISender sender)
         {
             sender.Send(this.provider.GetQueries());

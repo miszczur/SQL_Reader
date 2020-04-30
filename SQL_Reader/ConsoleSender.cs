@@ -19,16 +19,16 @@ namespace SQL_Reader
 
         public void Send(IEnumerable<string> queries)
         {
-            
+
             foreach (string query in queries)
-            {               
-                Send(query);               
+            {
+                Send(query);
             }
         }
 
         protected virtual void OnQueriesLogged(string e)
         {
-            Logging?.Invoke(this,e);
+            Logging?.Invoke(this, e);
         }
     }
 }

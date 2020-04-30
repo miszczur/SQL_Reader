@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
-using System.Threading;
-using System;
 
 namespace SQL_Reader
 {
@@ -45,5 +43,5 @@ namespace SQL_Reader
             }
             return listOfLines;
         }
-    } 
+    }
 }
