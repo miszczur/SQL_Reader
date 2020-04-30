@@ -19,7 +19,7 @@ namespace SQL_Reader
         {
             if (lines == null)
             {
-                throw new QueryFromFileProviderNullLineException("parameter of this constructor cannot be null");
+                throw new QueryFromFileProviderNullLineException("Parameter of this constructor cannot be null.");
             }
             this.lines = lines;
         }
@@ -43,11 +43,7 @@ namespace SQL_Reader
                 }
                 listOfLines.Add(buffor);
             }
-            return listOfLines;           
+            return listOfLines;
         }
-        public void OnQueriesProvided()
-        {
-            Console.WriteLine("Queries has been provided.");
-        }
-    }
+    } 
 }

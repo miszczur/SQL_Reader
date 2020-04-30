@@ -6,18 +6,24 @@ namespace SQL_Reader
     {
         static void Main(string[] args)
         {
-            
-           // QueryFromFileProvider queryFromFileProvider = new QueryFromFileProvider(args[0]);
+            LogMonitor log = new LogMonitor();
+           
             ConsoleSender writeOnConsole = new ConsoleSender(); // publisher
-                                                                     
-            string[] lines = { "alelalamanochala ------dousuniecia"};
-        
+            
+            
+            string[] lines = { "alelalamanochala ------dousuniecia", " druga linijka -- do usuniecia"};       
             QueryFromFileProvider queryFromFileProvider = new QueryFromFileProvider(lines);
+            // QueryFromFileProvider queryFromFileProvider = new QueryFromFileProvider(args[0]);
             SqlReader reader = new SqlReader(queryFromFileProvider);
-            writeOnConsole.QueriesLogged += queryFromFileProvider.OnQueriesProvided;
+            //         writeOnConsole.QueriesLogged += queryFromFileProvider.OnQueriesProvided;
+            writeOnConsole.Logging += log.OnQueryProvided;
+            
             reader.SendQueries(writeOnConsole);
             
             Console.ReadKey();
         }
+
+        
     }
 }
+

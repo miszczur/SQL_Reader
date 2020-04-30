@@ -8,32 +8,27 @@ namespace SQL_Reader
         // define a delegate
         // 2 define an event based on that delegate
         //3 raise or publish the event
-        public delegate void LogMonitorEventHandler();
-        public event LogMonitorEventHandler QueriesLogged;
+        public event EventHandler<string> Logging;
 
 
         public void Send(string query)
         {
+            OnQueriesLogged(query);
             Console.WriteLine(query);
         }
 
         public void Send(IEnumerable<string> queries)
         {
-            OnQueriesLogged();
+            
             foreach (string query in queries)
-            {
-                
-                Send(query);
-                
+            {               
+                Send(query);               
             }
         }
 
-        protected virtual void OnQueriesLogged()
+        protected virtual void OnQueriesLogged(string e)
         {
-            if (QueriesLogged != null)
-            {
-                QueriesLogged();
-            }
+            Logging?.Invoke(this,e);
         }
     }
 }
