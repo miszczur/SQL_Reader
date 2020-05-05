@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace SQL_Reader
@@ -39,10 +41,10 @@ namespace SQL_Reader
                 {
                     continue;
                 }
-                
+
                 listOfLines.Add(buffor);
 
-                buffor = string.Empty; //when query has been provided, we are cleaning variable for Concat method
+                buffor = null; //when query has been provided, we are cleaning variable for Concat method
             }
             return listOfLines;
         }
