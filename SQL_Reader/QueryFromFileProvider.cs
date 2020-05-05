@@ -30,16 +30,19 @@ namespace SQL_Reader
         public IEnumerable<string> GetQueries()
         {
             List<string> listOfLines = new List<string>();
-            string buffor;
+            string buffor = null;
 
             foreach (var item in lines)
             {
-                buffor = removeComments(item);
-                if (string.IsNullOrWhiteSpace(buffor))
+                buffor = string.Concat(buffor, removeComments(item));
+                if (string.IsNullOrWhiteSpace(buffor) || buffor.EndsWith(';') == false)
                 {
                     continue;
                 }
+                
                 listOfLines.Add(buffor);
+
+                buffor = string.Empty; //when query has been provided, we are cleaning variable for Concat method
             }
             return listOfLines;
         }

@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 namespace SQL_Reader
 {
     public class LogMonitor
@@ -6,10 +7,8 @@ namespace SQL_Reader
 
         public void OnQueryProvided(object obj, string e)
         {
-            using (StreamWriter sw = File.AppendText("logFile.txt"))
-            {
-                sw.WriteLine($"Query:{e} has been provided.");
-            }
+            File.AppendAllText("logFile.txt", $"{DateTime.Now.ToLongTimeString()} {DateTime.Now.ToLongDateString()} {e} {Environment.NewLine}");
+
         }
     }
 }

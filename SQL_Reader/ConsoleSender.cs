@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace SQL_Reader
 {
@@ -19,7 +20,7 @@ namespace SQL_Reader
 
         public void Send(IEnumerable<string> queries)
         {
-
+            
             foreach (string query in queries)
             {
                 Send(query);
