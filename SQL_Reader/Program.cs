@@ -6,29 +6,38 @@ namespace SQL_Reader
     {
         static void Main(string[] args)
         {
+            string path = args[0];
+
             LogMonitor log = new LogMonitor(); //subscriber
 
-            ConsoleSender writeOnConsole = new ConsoleSender(); // publisher
-
-
-            string[] lines = { "alelalamanochala; ------dousuniecia;", " druga linijka; -- do usuniecia", @"INSERT INTO TMP_MENU( PROGRAMIDENT, PRGPATH,  KABEL, KABELIDENT, OPIS, SPECIALIDX, CHIP, SHOWTOUSER, FUNCTIONALITY, CABLEGROUP)
-            ", @"VALUES(3128, 'CARS\ACURA\ILX 93C66', 'C18', 145, 764, 0, 69, 1, 36, 2)" };
-            QueryFromFileProvider queryFromFileProvider = new QueryFromFileProvider(lines);
-            // QueryFromFileProvider queryFromFileProvider = new QueryFromFileProvider(args[0]);
-            SqlReader reader = new SqlReader(queryFromFileProvider);
-            writeOnConsole.Logging += log.OnQueryProvided;
-
             try
-            {
-                reader.SendQueries(writeOnConsole);
+            {               
+                QueryFromFileProvider queryFromFileProvider = new QueryFromFileProvider(path);
+                ConsoleSender writeOnConsole = new ConsoleSender(); // publisher
+                SqlReader reader = new SqlReader(queryFromFileProvider);
+
+                writeOnConsole.Logging += log.OnQueryProvided;
+
+                try
+                {
+                    reader.SendQueries(writeOnConsole);
+                }
+                catch (QueryWithoutSemicolonException e)
+                {
+                    log.OnFileWithoutBeginAndEndScriptLines(e.Message);
+                    Console.WriteLine(e.Message);
+                }
+
+                Console.ReadKey();
+
             }
-            catch(QueryWithoutSemicolonException e)
+            catch (FileWithoutBeginAndEndScriptLinesException e)
             {
-                reader.SendQueries(writeOnConsole);
-               
-                Console.WriteLine(e.message);
+                log.OnFileWithoutBeginAndEndScriptLines(e.Message);
+                Console.WriteLine(e.Message);
             }
-            Console.ReadKey();
+
+            
         }
 
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Linq;
 
 namespace SQL_Reader
 {
@@ -11,7 +12,16 @@ namespace SQL_Reader
 
         public QueryFromFileProvider(string path)
         {
-            this.lines = File.ReadAllLines(path);
+
+            if (File.ReadLines(path).First() == "-- begin script" && File.ReadLines(path).Last() == "-- end script")
+            {
+                this.lines = File.ReadAllLines(path);
+            }
+
+            else
+            {
+                throw new FileWithoutBeginAndEndScriptLinesException("Add \"-- begin script\" in first line and \"-- end script\" in last line in File.");
+            }
         }
 
         public QueryFromFileProvider(IEnumerable<string> lines)
@@ -36,23 +46,22 @@ namespace SQL_Reader
             foreach (var item in lines)
             {
                 buffor = string.Concat(buffor, removeComments(item));
-                if (string.IsNullOrWhiteSpace(buffor) || buffor.EndsWith(';') == false)
+                if (buffor.EndsWith(';'))
                 {
+                    listOfLines.Add(buffor);
+                    buffor = null; //when query has been provided, we are cleaning variable for Concat method
+                }
+                else if (string.IsNullOrWhiteSpace(buffor))
+                {
+                    buffor = null;
                     continue;
                 }
-
-                listOfLines.Add(buffor);
-
-                buffor = null; //when query has been provided, we are cleaning variable for Concat method
             }
-            if (buffor != null)
+            if (string.IsNullOrEmpty(buffor) == false)
             {
-                throw new QueryWithoutSemicolonException(buffor, listOfLines);
-                File.AppendAllText("logFile.txt", $"{DateTime.Now:yyyy.MM.dd HH:mm:ss.fff} | {buffor} thrown QueryWithoutSemicolonExpression {Environment.NewLine}");
+                throw new QueryWithoutSemicolonException($"{buffor} doesn't contain \";\" on the end of line. ") ;
             }
             return listOfLines;
         }
-
-
     }
 }

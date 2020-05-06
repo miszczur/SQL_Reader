@@ -21,8 +21,6 @@ namespace SQL_Reader
 
     public class QueryWithoutSemicolonException : Exception
     {
-        public string message { get; set; }
-        public IEnumerable<string> correctrecords { get; set; }
         public QueryWithoutSemicolonException() : base()
         {
 
@@ -32,16 +30,23 @@ namespace SQL_Reader
         {
         }
 
-        public QueryWithoutSemicolonException(string message, IEnumerable<string> correctRecords) : base(message)
-        {
-            this.message = message;
-            this.correctrecords = correctRecords;
-        }
-
         public QueryWithoutSemicolonException(string message) : base(message)
         {
         }
     }
 
+    public class FileWithoutBeginAndEndScriptLinesException : Exception
+    {
+        public FileWithoutBeginAndEndScriptLinesException() : base()
+        {
+        }
 
+        public FileWithoutBeginAndEndScriptLinesException(string message) : base(message)
+        {
+        }
+
+        public FileWithoutBeginAndEndScriptLinesException(string message, Exception innerException) : base(message, innerException)
+        {
+        }
+    }
 }

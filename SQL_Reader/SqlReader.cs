@@ -1,8 +1,10 @@
-﻿namespace SQL_Reader
+﻿using System.IO;
+
+namespace SQL_Reader
 {
     public class SqlReader
     {
-        
+
 
         private readonly IQueryProvider provider;
         public SqlReader(IQueryProvider provider)
