@@ -13,8 +13,8 @@ namespace SQL_Reader.Tests
         [InlineData(" 123; --komentarz;", "123;")]
         [InlineData("\r\n\r\n\r\n 123; --blablabla", "123;")]
         [InlineData("123;\r\n --komentarz", "123;")]
-       
-      
+
+
 
 
         public void GetQueries_ResultShouldBeAsExpected(string input, string expected)
@@ -25,7 +25,7 @@ namespace SQL_Reader.Tests
             var result = provider.GetQueries();
             Assert.Equal(expected, result.ElementAt(0));
         }
-     
+
         [Theory]
         [InlineData(@"INSERT INTO TMP_MENU( PROGRAMIDENT, PRGPATH,  KABEL, KABELIDENT, OPIS, SPECIALIDX, CHIP, SHOWTOUSER, FUNCTIONALITY, CABLEGROUP)\r\n",
             @"VALUES(3027, 'CARS\ACURA\93C46', 'C12', 139, 0, 0, 68, 1, 36, 1);",

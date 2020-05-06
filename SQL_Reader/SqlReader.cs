@@ -2,6 +2,8 @@
 {
     public class SqlReader
     {
+        
+
         private readonly IQueryProvider provider;
         public SqlReader(IQueryProvider provider)
         {

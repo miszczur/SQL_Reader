@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace SQL_Reader
@@ -46,7 +45,14 @@ namespace SQL_Reader
 
                 buffor = null; //when query has been provided, we are cleaning variable for Concat method
             }
+            if (buffor != null)
+            {
+                throw new QueryWithoutSemicolonException(buffor, listOfLines);
+                File.AppendAllText("logFile.txt", $"{DateTime.Now:yyyy.MM.dd HH:mm:ss.fff} | {buffor} thrown QueryWithoutSemicolonExpression {Environment.NewLine}");
+            }
             return listOfLines;
         }
+
+
     }
 }

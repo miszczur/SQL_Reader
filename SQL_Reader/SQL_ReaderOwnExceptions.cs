@@ -1,8 +1,9 @@
 ﻿using System;
-using System.IO;
+using System.Collections.Generic;
 
 namespace SQL_Reader
 {
+
     public class QueryFromFileProviderNullLineException : Exception
     {
         public QueryFromFileProviderNullLineException() : base()
@@ -18,19 +19,29 @@ namespace SQL_Reader
         }
     }
 
-    public class QueryWithoutSemicolonException : ArgumentOutOfRangeException
+    public class QueryWithoutSemicolonException : Exception
     {
+        public string message { get; set; }
+        public IEnumerable<string> correctrecords { get; set; }
         public QueryWithoutSemicolonException() : base()
         {
-        }
 
-        public QueryWithoutSemicolonException(string message) : base(message)
-        {
-            File.AppendAllText("logFile.txt", $"{DateTime.Now:yyyy.MM.dd HH:mm:ss.fff} | Query dont have semicolon! {Environment.NewLine}");
         }
 
         public QueryWithoutSemicolonException(string message, Exception innerException) : base(message, innerException)
         {
         }
+
+        public QueryWithoutSemicolonException(string message, IEnumerable<string> correctRecords) : base(message)
+        {
+            this.message = message;
+            this.correctrecords = correctRecords;
+        }
+
+        public QueryWithoutSemicolonException(string message) : base(message)
+        {
+        }
     }
+
+
 }
