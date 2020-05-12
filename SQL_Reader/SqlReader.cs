@@ -1,6 +1,4 @@
-﻿using System.IO;
-
-namespace SQL_Reader
+﻿namespace SQL_Reader
 {
     public class SqlReader
     {

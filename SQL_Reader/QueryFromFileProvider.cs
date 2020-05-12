@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Text.RegularExpressions;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace SQL_Reader
 {
@@ -35,6 +34,7 @@ namespace SQL_Reader
 
         private string removeComments(string line)
         {
+            
             return Regex.Replace(line, "--.*", string.Empty).Trim(); //removing sql comments in single line from file
         }
 
@@ -48,7 +48,8 @@ namespace SQL_Reader
                 buffor = string.Concat(buffor, removeComments(item));
                 if (buffor.EndsWith(';'))
                 {
-                    listOfLines.Add(buffor);
+                  //  listOfLines.Add(buffor);
+                    yield return buffor;
                     buffor = null; //when query has been provided, we are cleaning variable for Concat method
                 }
                 else if (string.IsNullOrWhiteSpace(buffor))
@@ -59,9 +60,9 @@ namespace SQL_Reader
             }
             if (string.IsNullOrEmpty(buffor) == false)
             {
-                throw new QueryWithoutSemicolonException($"{buffor} doesn't contain \";\" on the end of line. ") ;
+                throw new QueryWithoutSemicolonException($"{buffor} doesn't contain \";\" on the end of line. ");
             }
-            return listOfLines;
+          //  return listOfLines;
         }
     }
 }
