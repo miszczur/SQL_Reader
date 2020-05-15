@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
+using System.IO;
 
 namespace SQL_Reader
 {
@@ -7,21 +9,20 @@ namespace SQL_Reader
         static void Main(string[] args)
         {
             string path = args[0];
-          //  path = @"C:\Users\Kuba\Desktop\menuTest.sql";
+            //  path = @"C:\Users\Kuba\Desktop\menuTest.sql";
 
             LogMonitor log = new LogMonitor(); //subscriber
-
 
             QueryFromFileProvider queryFromFileProvider = new QueryFromFileProvider(path);
             ConsoleSender writeOnConsole = new ConsoleSender(); // publisher
             SqlReader reader = new SqlReader(queryFromFileProvider);
             DataBaseSender sendToDb = new DataBaseSender();
 
-          //  writeOnConsole.Logging += log.OnQueryProvided;
+            writeOnConsole.Logging += log.OnQueryProvided;
             sendToDb.Logging += log.OnQueryProvided;
             try
             {
-                  // reader.SendQueries(writeOnConsole);
+                //reader.SendQueries(writeOnConsole);
                 reader.SendQueries(sendToDb);
             }
             catch (QueryWithoutSemicolonException e)
