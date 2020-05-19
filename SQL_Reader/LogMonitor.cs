@@ -8,7 +8,7 @@ namespace SQL_Reader
         {
             File.AppendAllText("logFile.txt", $"{DateTime.Now:yyyy.MM.dd HH:mm:ss.fff} | {e} {Environment.NewLine}");
         }
-        public void OnFileWithoutBeginAndEndScriptLines(string message)
+        public void OnFileWithoutSemicolonOrBeginAndEndScriptLines(string message)
         {
             File.AppendAllText("logFile.txt", $"{DateTime.Now:yyyy.MM.dd HH:mm:ss.fff} | {message} {Environment.NewLine}");
         }
