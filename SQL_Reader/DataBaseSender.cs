@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using System.Threading;
 using FirebirdSql.Data.Logging;
 using System.Linq;
+using System.Text;
 
 namespace SQL_Reader
 
@@ -14,42 +15,51 @@ namespace SQL_Reader
     class DataBaseSender : ISender, IDisposable
     {
         public event EventHandler<string> Logging;
+        public event EventHandler<string> Message;
 
         private FbConnection _connection;
         private FbTransaction _transaction;
+        private short _counter;
+        private readonly StringBuilder sb;
         public DataBaseSender(string path, string username, string password)
         {
             this._connection = new FbConnection($"database=localhost:{path};user={username};password={password}");
             _connection.Open();
-            Console.WriteLine("Connected to DB");
-
+            OnMessageConsole("Connected to the DB!");
+            sb = new StringBuilder();
 
         }
         public void Send(string query)
         {
+            sb.Append(query).Append("\n");
 
             if (query.Contains("PROCEDURE"))
             {
-                _transaction = _connection.BeginTransaction();
                 using var command = new FbCommand(query, _connection, _transaction);
-                Console.Write("\nExecuting procedure...");
+                OnMessageConsole("Executing procedure...");
 
                 command.ExecuteScalar();
-                _transaction.Commit();
-                Console.WriteLine("\tProcedure has been correctly sent.");
+                OnMessageConsole("Procedure has been correctly executed");
+                OnMessageConsole("Sending queries...");
             }
             else
             {
                 using var command = new FbCommand(query, _connection, _transaction);
                 command.ExecuteNonQuery();
+                _counter++;
+            }
+            if (_counter == 100 || query.Contains("PROCEDURE"))
+            {
+                OnQueriesLogged(sb.ToString());
+                _transaction = _connection.BeginTransaction();
             }
 
         }
 
         public void Send(IEnumerable<string> queries)
         {
-            Console.Write("Sending Queries, be patient...");
             _transaction = _connection.BeginTransaction();
+            OnMessageConsole("Sending queries...");
             foreach (string query in queries)
             {
                 string buffor = Regex.Replace(query, "COMMIT;.*", string.Empty).Trim();
@@ -57,33 +67,30 @@ namespace SQL_Reader
                 {
                     continue;
                 }
-                else if (query.Contains("PROCEDURE"))
-                {
-                    _transaction.Commit();
-                }
 
                 Send(query);
-
-                if(query == queries.Last())
-                {
-                    _transaction.Commit();
-                }
-
-                OnQueriesLogged(query);               
             }
 
-
-            Console.WriteLine("\nEnd.");
+            OnQueriesLogged(sb.ToString());
+            OnMessageConsole("End.");
         }
 
-        
+
         protected virtual void OnQueriesLogged(string e)
         {
+            _transaction.Commit();
             Logging?.Invoke(this, e);
+            _counter = 0;
+            sb.Clear();
         }
+        protected virtual void OnMessageConsole(string e)
+        {
+            Message?.Invoke(this, e);
 
+        }
         public void Dispose()
         {
+            _transaction.Dispose();
             _connection.Close();
             _connection.Dispose();
         }

@@ -8,15 +8,27 @@ namespace SQL_Reader
     {
         static void Main(string[] args)
         {
-            string path = args[0];
+            string path; 
+
+
            // path = @"C:\Users\Kuba\Desktop\menuTest.sql";
 
             LogMonitor log = new LogMonitor(); //subscriber
 
             try
             {
-
                 JsonConfig cfg = JsonConvert.DeserializeObject<JsonConfig>(File.ReadAllText("config.json"));
+
+                if (args.Length!=0)
+                {
+                    path = args[0];
+                }
+                else
+                {
+                path = cfg.DefaultPath;
+
+                }
+                
 
                 QueryFromFileProvider queryFromFileProvider = new QueryFromFileProvider(path);
                 ConsoleSender writeOnConsole = new ConsoleSender(); // publisher
@@ -24,6 +36,7 @@ namespace SQL_Reader
                 writeOnConsole.Logging += log.OnQueryProvided;
                 using DataBaseSender sendToDb = new DataBaseSender(cfg.Path, cfg.Username, cfg.Password);
                 sendToDb.Logging += log.OnQueryProvided;
+                sendToDb.Message += log.OnMessage;
                 reader.SendQueries(sendToDb);
 
             }

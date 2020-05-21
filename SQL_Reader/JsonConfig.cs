@@ -9,7 +9,8 @@ namespace SQL_Reader
     {
         public string Password { get; set; }
         public string Path { get; set; }
-        public string Username { get; set; }
+        public string Username { get; set; }      
+        public string DefaultPath { get; set; }
     
 
     }
