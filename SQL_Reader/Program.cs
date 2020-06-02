@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using FirebirdSql.Data.FirebirdClient;
+using Newtonsoft.Json;
 using System;
 using System.IO;
 
@@ -8,10 +9,10 @@ namespace SQL_Reader
     {
         static void Main(string[] args)
         {
-            string path; 
+            string path;
 
 
-           // path = @"C:\Users\Kuba\Desktop\menuTest.sql";
+            // path = @"C:\Users\Kuba\Desktop\menuTest.sql";
 
             LogMonitor log = new LogMonitor(); //subscriber
 
@@ -19,38 +20,44 @@ namespace SQL_Reader
             {
                 JsonConfig cfg = JsonConvert.DeserializeObject<JsonConfig>(File.ReadAllText("config.json"));
 
-                if (args.Length!=0)
+                if (args.Length != 0)
                 {
                     path = args[0];
                 }
                 else
                 {
-                path = cfg.DefaultPath;
+                    path = cfg.DefaultPath;
 
                 }
-                
+
 
                 QueryFromFileProvider queryFromFileProvider = new QueryFromFileProvider(path);
                 ConsoleSender writeOnConsole = new ConsoleSender(); // publisher
                 SqlReader reader = new SqlReader(queryFromFileProvider);
                 writeOnConsole.Logging += log.OnQueryProvided;
                 using DataBaseSender sendToDb = new DataBaseSender(cfg.Path, cfg.Username, cfg.Password);
-                sendToDb.Logging += log.OnQueryProvided;
+                sendToDb.Log += log.OnQueryProvided;
                 sendToDb.Message += log.OnMessage;
+                sendToDb.Error += log.OnErrorLogging;
                 reader.SendQueries(sendToDb);
 
             }
             catch (QueryWithoutSemicolonException e)
             {
-                log.OnFileWithoutSemicolonOrBeginAndEndScriptLines(e.Message);
-                Console.WriteLine(e.Message);
+                log.OnErrorLogging(e, e.Message);
             }
             catch (FileWithoutBeginAndEndScriptLinesException e)
             {
-                log.OnFileWithoutSemicolonOrBeginAndEndScriptLines(e.Message);
-                Console.WriteLine(e.Message);
+                log.OnMessage(e, e.Message);
             }
-
+            catch (FbException e)
+            {
+                log.OnErrorLogging(e, e.Message);
+            }
+            catch(IOException e)
+            {
+                log.OnErrorLogging(e, e.Message);
+            }
             Console.ReadKey();
         }
 

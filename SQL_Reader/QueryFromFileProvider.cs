@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -21,6 +22,7 @@ namespace SQL_Reader
             {
                 throw new FileWithoutBeginAndEndScriptLinesException("Add \"-- begin script\" in first line and \"-- end script\" in last line in File.");
             }
+
         }
 
         public QueryFromFileProvider(IEnumerable<string> lines)
@@ -34,13 +36,13 @@ namespace SQL_Reader
 
         private string removeComments(string line)
         {
-            
+
             return Regex.Replace(line, "--.*", string.Empty).Trim(); //removing sql comments in single line from file
         }
 
         public IEnumerable<string> GetQueries()
         {
-            List<string> listOfLines = new List<string>();
+          //  List<string> listOfLines = new List<string>();
             string buffor = null;
 
             foreach (var item in lines)
@@ -48,7 +50,7 @@ namespace SQL_Reader
                 buffor = string.Concat(buffor, removeComments(item));
                 if (buffor.EndsWith(';'))
                 {
-                  //  listOfLines.Add(buffor);
+                    //  listOfLines.Add(buffor);
                     yield return buffor;
                     buffor = null; //when query has been provided, we are cleaning variable for Concat method
                 }
@@ -58,11 +60,11 @@ namespace SQL_Reader
                     continue;
                 }
             }
-            if (string.IsNullOrEmpty(buffor) == false)
+            if (!string.IsNullOrEmpty(buffor))
             {
                 throw new QueryWithoutSemicolonException($"{buffor} doesn't contain \";\" on the end of line. ");
             }
-          //  return listOfLines;
+            //  return listOfLines;
         }
     }
 }
