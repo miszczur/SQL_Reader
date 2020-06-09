@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
-using System;
-using FirebirdSql.Data.FirebirdClient;
-using System.Text.RegularExpressions;
+﻿using System;
+using System.Collections.Generic;
 using System.Text;
-using FirebirdSql.Data.Services;
+using System.Text.RegularExpressions;
+using FirebirdSql.Data.FirebirdClient;
+using SQL_Reader.Interfaces;
 
-namespace SQL_Reader
+namespace SQL_Reader.Senders
 
 {
     class DataBaseSender : ISender, IDisposable
@@ -14,21 +14,21 @@ namespace SQL_Reader
         public event EventHandler<string> Message;
         public event EventHandler<string> Error;
 
-        private FbConnection _connection;
+        private readonly FbConnection _connection;
         private FbTransaction _transaction;
         private short _counter;
-        private readonly StringBuilder sb;
+        private readonly StringBuilder _sb;
         public DataBaseSender(string path, string username, string password)
         {
                 this._connection = new FbConnection($"database=localhost:{path};user={username};password={password}");
                 _connection.Open();
                 OnMessageConsole("Connected to the DB!");
-                sb = new StringBuilder();          
+                _sb = new StringBuilder();         
         }
         public void Send(string query)
         {
             
-                sb.Append(query).Append("\n");
+                _sb.Append(query).Append("\n");
 
                 if (query.Contains("PROCEDURE"))
                 {
@@ -47,7 +47,7 @@ namespace SQL_Reader
                 }
                 if (_counter == 100 || query.Contains("PROCEDURE"))
                 {
-                    OnLogging(sb.ToString());
+                    OnLogging(_sb.ToString());
                     _transaction = _connection.BeginTransaction();
                 }
             
@@ -70,7 +70,7 @@ namespace SQL_Reader
                 Send(query);
             }
 
-            OnLogging(sb.ToString());
+            OnLogging(_sb.ToString());
             OnMessageConsole("End.");
             }
             catch (FbException e)
@@ -89,7 +89,7 @@ namespace SQL_Reader
             _transaction.Commit();
             Log?.Invoke(this, e);
             _counter = 0;
-            sb.Clear();
+            _sb.Clear();
         }
         protected virtual void OnMessageConsole(string e)
         {

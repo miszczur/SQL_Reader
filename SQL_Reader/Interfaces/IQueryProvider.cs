@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace SQL_Reader
+namespace SQL_Reader.Interfaces
 {
     public interface IQueryProvider
     {

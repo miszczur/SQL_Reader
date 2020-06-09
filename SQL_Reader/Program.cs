@@ -2,6 +2,11 @@
 using Newtonsoft.Json;
 using System;
 using System.IO;
+using SQL_Reader.Exceptions;
+using SQL_Reader.Logs;
+using SQL_Reader.Providers;
+using SQL_Reader.Readers;
+using SQL_Reader.Senders;
 
 namespace SQL_Reader
 {
@@ -9,17 +14,15 @@ namespace SQL_Reader
     {
         static void Main(string[] args)
         {
-            string path;
-
-
             // path = @"C:\Users\Kuba\Desktop\menuTest.sql";
 
             LogMonitor log = new LogMonitor(); //subscriber
 
             try
             {
-                JsonConfig cfg = JsonConvert.DeserializeObject<JsonConfig>(File.ReadAllText("config.json"));
+                var cfg = JsonConvert.DeserializeObject<JsonConfig>(File.ReadAllText("config.json"));
 
+                string path;
                 if (args.Length != 0)
                 {
                     path = args[0];

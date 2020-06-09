@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
-namespace SQL_Reader
+
+namespace SQL_Reader.Logs
 {
     public class LogMonitor
     {

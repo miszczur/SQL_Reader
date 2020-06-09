@@ -1,21 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using SQL_Reader.Exceptions;
+using IQueryProvider = SQL_Reader.Interfaces.IQueryProvider;
 
-namespace SQL_Reader
+namespace SQL_Reader.Providers
 {
     public class QueryFromFileProvider : IQueryProvider
     {
-        private readonly IEnumerable<string> lines;
+        private readonly IEnumerable<string> _lines;
 
         public QueryFromFileProvider(string path)
         {
 
             if (File.ReadLines(path).First() == "-- begin script" && File.ReadLines(path).Last() == "-- end script")
             {
-                this.lines = File.ReadAllLines(path);
+                this._lines = File.ReadAllLines(path);
             }
 
             else
@@ -27,11 +28,7 @@ namespace SQL_Reader
 
         public QueryFromFileProvider(IEnumerable<string> lines)
         {
-            if (lines == null)
-            {
-                throw new QueryFromFileProviderNullLineException("Parameter of this constructor cannot be null.");
-            }
-            this.lines = lines;
+            this._lines = lines ?? throw new QueryFromFileProviderNullLineException("Parameter of this constructor cannot be null.");
         }
 
         private string removeComments(string line)
@@ -45,7 +42,7 @@ namespace SQL_Reader
           //  List<string> listOfLines = new List<string>();
             string buffor = null;
 
-            foreach (var item in lines)
+            foreach (var item in _lines)
             {
                 buffor = string.Concat(buffor, removeComments(item));
                 if (buffor.EndsWith(';'))

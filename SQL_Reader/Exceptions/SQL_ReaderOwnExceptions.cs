@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace SQL_Reader
+namespace SQL_Reader.Exceptions
 {
 
     public class QueryFromFileProviderNullLineException : Exception

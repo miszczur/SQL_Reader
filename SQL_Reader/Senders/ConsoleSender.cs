@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using SQL_Reader.Interfaces;
 
-namespace SQL_Reader
+namespace SQL_Reader.Senders
 {
     public class ConsoleSender : ISender
     {
-        // define a delegate
-        // 2 define an event based on that delegate
-        //3 raise or publish the event
         public event EventHandler<string> Logging;
 
 
